@@ -6,14 +6,8 @@ import (
 	"strings"
 )
 
-const (
-	Question = iota
-	Dollar
-)
-
 type DatabaseQuery struct {
 	action            string
-	placeholderFormat int
 	distinct          bool
 	columns           []string
 	values            [][]interface{}
@@ -160,4 +154,16 @@ func (q *DatabaseQuery) ToSQL() (string, []interface{}, error) {
 		}
 	}
 	return sqlbuf.String(), args, err
+}
+
+func PostgresSQLFormat(query string) string {
+	parts := strings.Split(query, "?")
+	var sqlbuf bytes.Buffer
+	for i, v := range parts {
+		sqlbuf.WriteString(v)
+		if len(parts) != (i+1) {
+			sqlbuf.WriteString(fmt.Sprintf("$%d", i+1))
+		}
+	}
+	return sqlbuf.String()
 }
