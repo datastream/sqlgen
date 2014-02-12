@@ -3,22 +3,23 @@ package sqlgen
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"strings"
 )
 
 type DatabaseQuery struct {
-	action            string
-	distinct          bool
-	columns           []string
-	values            [][]interface{}
-	tables            []string
-	setParts          []conditionPart
-	whereParts        []conditionPart
-	havingParts       []conditionPart
-	groupBys          []string
-	orderBys          []string
-	limit             string
-	offset            string
+	action      string
+	distinct    bool
+	columns     []string
+	values      [][]interface{}
+	tables      []string
+	setParts    []conditionPart
+	whereParts  []conditionPart
+	havingParts []conditionPart
+	groupBys    []string
+	orderBys    []string
+	limit       string
+	offset      string
 }
 
 // From "... from ..."
@@ -161,7 +162,7 @@ func PostgresSQLFormat(query string) string {
 	var sqlbuf bytes.Buffer
 	for i, v := range parts {
 		sqlbuf.WriteString(v)
-		if len(parts) != (i+1) {
+		if len(parts) != (i + 1) {
 			sqlbuf.WriteString(fmt.Sprintf("$%d", i+1))
 		}
 	}
