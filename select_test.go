@@ -40,3 +40,19 @@ func TestSelectALL(t *testing.T) {
 		t.Fatal(sqlstr, args, err)
 	}
 }
+func TestSelectOrder(t *testing.T) {
+	q := sqlgen.Select("")
+	q.From("test t")
+	q.Where("a = ?", 1)
+        q.OrderBys("t.user_id")
+	sqlstr, args, err := q.ToSQL()
+	if err == nil {
+		t.Fatal(sqlstr, args, err)
+	}
+	q.Columns("a")
+	q.Columns("d")
+	sqlstr, args, err = q.ToSQL()
+	if sqlstr != "SELECT a, d FROM test t WHERE a = ? ORDER BY t.user_id" || len(args) != 1 {
+		t.Fatal(sqlstr, args, err)
+	}
+}
