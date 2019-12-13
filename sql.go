@@ -144,7 +144,7 @@ func (q *DatabaseQuery) ToSQL() (string, []interface{}, error) {
 	if q.action == "SELECT" {
 		if len(q.orderBys) > 0 {
 			sqlbuf.WriteString(" ORDER BY ")
-			valid := regexp.MustCompile("^[A-Za-z0-9_]+$")
+			valid := regexp.MustCompile("^[a-zA-Z0-9_]+((\.)[a-zA-Z0-9_]+)+?$")
 			if !valid.MatchString(strings.Join(q.orderBys, "_")) {
 				return sqlbuf.String(), args, fmt.Errorf("bad order by args")
 			}
