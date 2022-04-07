@@ -1,7 +1,7 @@
 package sqlgen_test
 
 import (
-	"../sqlgen"
+	"github.com/datastream/sqlgen"
 	"testing"
 )
 
